@@ -16,7 +16,8 @@
     const outside=(1-arrival)*(unit*1.5+index*22);
     const swirl=orbit+absorb*2.8;
     const drift=Math.sin(time*.65+index*1.7)*3*arrival*(1-absorb);
-    return {x:width*.5+Math.cos(swirl)*(radius+outside),y:height*.52+Math.sin(swirl)*(radius*.88+outside)+drift,rotation:Math.sin(angle*2)*.24+(1-arrival)*(index%2?1:-1)*1.5+absorb*2.2,scale:(mobile?.76:1)*(1-absorb*.94),alpha:arrival*(1-ease(range(.65,1,absorb))),heat:range(.1,.7,absorb)};
+    // Leave room between the larger labels: wide on desktop, tall on phones.
+    return {x:width*.5+Math.cos(swirl)*(radius*(mobile?1:1.4)+outside),y:height*.52+Math.sin(swirl)*(radius*(mobile?1.65:.88)+outside)+drift,rotation:Math.sin(angle*2)*.24+(1-arrival)*(index%2?1:-1)*1.5+absorb*2.2,scale:(mobile?.76:1)*(1-absorb*.94),alpha:arrival*(1-ease(range(.65,1,absorb))),heat:range(.1,.7,absorb)};
   }
   function paperText(scene){return {
     enter:range(3.9,4.55,scene),

@@ -12,7 +12,7 @@ layer.innerHTML=`
   <p class="story-kicker">01 / THE PERSON</p><div class="split-statement"><h2>I like knowing<br>how things work.</h2><h2>And making them<br>look good.</h2></div><p class="story-footnote">LEARNING AND BUILDING</p>
 </section>
 <section class="story-panel story-background" data-center="3" aria-label="My background" aria-hidden="true" inert>
-  <h2>I like knowing how things work.<br><span>And making them look good.</span></h2><p class="story-side-copy">I'm Griz. My background is computer science, web design, and graphic design, so I care as much about how something works under the hood as how it looks and feels to use. I spend a chunk of every day learning about AI and building apps and small tools to help with my own day-to-day. When one actually makes my routine easier, I package it up and put it in my Etsy shop for others.</p><span class="story-corner-label">MOVE TO EXPLORE · CLICK TO SEND A SIGNAL</span>
+  <h2>I like knowing how things work.<br><span>And making them look good.</span></h2><p class="story-side-copy">I'm Griz. My background is computer science, web design, and graphic design, so I care as much about how something works under the hood as how it looks and feels to use. I spend a chunk of every day learning about AI and building apps and small tools to help with my own day to day. When one actually makes my routine easier, I package it up and put it in my Etsy shop for others.</p><span class="story-corner-label">MOVE TO EXPLORE · CLICK TO SEND A SIGNAL</span>
 </section>
 <section class="story-panel story-interests" data-center="4.5" aria-label="AI and technology interests" aria-hidden="true" inert>
   <p class="story-kicker">02 / FOLLOWING THE QUESTIONS</p><h2>Less standing still.</h2><div class="story-giant">More what if?</div><div class="floating-topics"><span>Artificial intelligence</span><span>Connected systems</span><span>Ideas → experiments</span><span>Learning by doing</span><span>People & technology</span><span>What comes next?</span></div><p class="story-footnote">What I spend my time learning and building.</p>
@@ -51,6 +51,7 @@ function selectTool(index){toolButtons.forEach((b,i)=>{b.setAttribute('aria-sele
 toolButtons.forEach((b,i)=>{b.addEventListener('click',()=>selectTool(i));b.addEventListener('keydown',e=>{let next;if(e.key==='ArrowRight')next=(i+1)%3;if(e.key==='ArrowLeft')next=(i+2)%3;if(e.key==='Home')next=0;if(e.key==='End')next=2;if(next!==undefined){e.preventDefault();selectTool(next);toolButtons[next].focus()}})});selectTool(0);
 layer.querySelector('.story-connect').dataset.center='22.4';
 const panels=[...layer.querySelectorAll('.story-panel')];
+const projectNote=layer.querySelector('.story-glass-note');
 const bloom=document.createElement('div');bloom.className='story-bloom';bloom.setAttribute('aria-hidden','true');hero.append(bloom);
 layer.querySelectorAll('[data-open-project]').forEach(button=>button.addEventListener('click',()=>document.querySelector(`.project[data-project="${button.dataset.openProject}"]`).click()));
 layer.querySelector('.story-connect-button').addEventListener('click',()=>document.querySelector('.contact-button').click());
@@ -99,7 +100,7 @@ function topics(value){
   const dx=pose.x-pointer.x,dy=pose.y-pointer.y,dist=Math.hypot(dx,dy);let repel=Math.exp(-dist*dist/14000)*14;
   if(paperPulse){const age=clock-paperPulse.time,px=pose.x-paperPulse.x,py=pose.y-paperPulse.y,d=Math.hypot(px,py)||1;if(age<2){const force=Math.exp(-Math.pow((d-age*350)/90,2))*Math.exp(-age*1.5)*50;pose.x+=px/d*force;pose.y+=py/d*force;pose.rotation+=force*.003}}
   ctx.save();ctx.globalAlpha=pose.alpha;ctx.translate(pose.x+dx/(dist||1)*repel,pose.y+dy/(dist||1)*repel);ctx.rotate(pose.rotation);ctx.scale(pose.scale,pose.scale);
-  ctx.font='11px Manrope, sans-serif';const w=ctx.measureText(label).width+39,h=42;
+  ctx.font='500 14px Manrope, sans-serif';const w=ctx.measureText(label).width+39,h=42;
   ctx.shadowColor='#0005';ctx.shadowBlur=14;ctx.shadowOffsetY=5;ctx.fillStyle='#f6f1ea';ctx.beginPath();ctx.roundRect(-w/2,-h/2,w,h,2);ctx.fill();ctx.shadowColor='transparent';
   ctx.strokeStyle='#79766c';ctx.lineWidth=.7;ctx.strokeRect(-w/2+10,-4,8,8);ctx.fillStyle='#302b25';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,-w/2+24,1);
   if(pose.heat>0){const g=ctx.createLinearGradient(-w/2-9,0,-w/2+12,0);g.addColorStop(0,'#ee842700');g.addColorStop(.45,'#ffb950');g.addColorStop(.6,'#fff8d4');g.addColorStop(1,'#ee842700');ctx.globalAlpha*=pose.heat;ctx.shadowColor='#ff9d31';ctx.shadowBlur=20;ctx.fillStyle=g;ctx.fillRect(-w/2-9,-h/2-6,21,h+12)}ctx.restore();
@@ -144,7 +145,7 @@ function systemScene(value){
 }
 
 function paint(value){
-ctx.setTransform(2048/width,0,0,2048/height,0,0);ctx.globalAlpha=1;ctx.filter='none';dark();
+ctx.setTransform(composite.width/width,0,0,composite.height/height,0,0);ctx.globalAlpha=1;ctx.filter='none';dark();
 const opening=1-smooth(.2,1.05,value);if(opening>0){ctx.save();ctx.globalAlpha=opening;ctx.filter=`blur(${smooth(.15,.95,value)*15}px)`;covered(source);ctx.restore()}
 const interest=smooth(3.65,4.25,value)*(1-smooth(5.15,5.8,value));if(interest>0){ctx.save();ctx.globalAlpha=interest*.14;ctx.strokeStyle='#ebc49c';ctx.lineWidth=1;ctx.setLineDash([2,5]);const r=Math.min(width,height)*.24;ctx.strokeRect(width*.5-r,height*.52-r,r*2,r*2);ctx.beginPath();ctx.arc(width*.5,height*.52,r*.88,0,Math.PI*2);ctx.stroke();ctx.restore()}
 paperTypography(value);topics(value);
@@ -169,9 +170,9 @@ orbStage.style.left=`${pose.x*100}%`;orbStage.style.top=`${pose.y*100}%`;orbStag
 hero._story={radius,morph:pose.m,half:[pose.w,pose.h],water:1-smooth(.15,.7,value),progress:value};
 const opening=1-smooth(.05,.65,value);for(const el of hero.querySelectorAll('.hero-top,.hero-bottom,.orb-caption')){el.style.setProperty('--opening',opening);el.style.pointerEvents=opening>.1?'':'none';el.inert=opening<.1}
 panels.forEach(panel=>{const alpha=panelOpacity(panel,value);panel.style.opacity=alpha;panel.style.visibility=alpha>.005?'visible':'hidden';panel.inert=alpha<.5;panel.setAttribute('aria-hidden',String(alpha<.5));if(alpha<.005)return;const local=value-Number(panel.dataset.center);panel.style.setProperty('--travel',`${local}`);const enter=M.range(-.8,-.2,local),exit=panel.classList.contains('story-connect')?0:panel.classList.contains('story-projects')?M.range(1.05,1.65,local):M.range(.35,.9,local);(panel._chars||[]).forEach((char,index)=>{const f=M.focus(index,panel._chars.length,enter,exit);char.style.opacity=f.alpha;char.style.filter=f.blur<.08?'none':`blur(${f.blur.toFixed(1)}px)`})});
-const shift=smooth(6.8,7.9,value),cardWidth=mobile?width*.78:width*.4;layer.querySelector('.story-gallery-track').style.transform=`translateX(${-shift*(cardWidth+width*.06)}px)`;layer.querySelector('.story-project-note').textContent=shift>.5?'Digital Routine Tools':'Personal AI App';layer.querySelectorAll('.story-project').forEach((card,i)=>{card.style.transform=`scale(${mobile?1:.48+.52*(i?shift:1-shift)})`;card.setAttribute('aria-label',i?'Open Digital Routine Tools':'Open Personal AI App')});
-layer.querySelector('.story-gallery-heading').style.opacity=1-smooth(6.85,7.35,value);const note=layer.querySelector('.story-glass-note');hero._storyNote=note;note.style.left=`${pose.x*width}px`;note.style.top=`${pose.y*height}px`;note.style.width=`${cw*.83}px`;note.style.opacity=smooth(.6,.95,pose.m);note.style.pointerEvents='none';
-const quietNote=layer.querySelector('.quiet-note');if(quietNote){quietNote.style.left=`${pose.x*width}px`;quietNote.style.top=`${pose.y*height}px`;quietNote.style.width=`${cw*.8}px`;if(value>13.3&&value<15.5)hero._storyNote=quietNote}
+const shift=smooth(6.8,7.9,value),cardWidth=mobile?width*.78:width*.4;layer.querySelector('.story-gallery-track').style.transform=`translateX(${-shift*(cardWidth+width*.06)}px)`;projectNote.querySelector('.story-project-note').textContent=shift>.5?'Digital Routine Tools':'Personal AI App';layer.querySelectorAll('.story-project').forEach((card,i)=>{card.style.transform=`scale(${mobile?1:.48+.52*(i?shift:1-shift)})`;card.setAttribute('aria-label',i?'Open Digital Routine Tools':'Open Personal AI App')});
+layer.querySelector('.story-gallery-heading').style.opacity=1-smooth(6.85,7.35,value);const note=projectNote;hero._storyNote=note;note.style.left=`${pose.x*width}px`;note.style.top=`${pose.y*height}px`;note.style.width=`${cw*.83}px`;note.style.opacity=smooth(.6,.95,pose.m)*panelOpacity(layer.querySelector('.story-projects'),value);note.style.pointerEvents='none';
+if(quietNote){quietNote.style.opacity=panelOpacity(layer.querySelector('.story-quiet'),value);quietNote.style.left=`${pose.x*width}px`;quietNote.style.top=`${pose.y*height}px`;quietNote.style.width=`${cw*.8}px`;if(value>13.3&&value<15.5)hero._storyNote=quietNote}
 const wallEntry=M.range(16.8,17.5,value),wallExit=M.range(18,18.5,value);
 wall.querySelectorAll('.wall-card').forEach((card,i)=>{const t=M.ease((wallEntry*1.45-i*.055)),out=M.ease(wallExit);card.style.opacity=t*(1-out);card.style.transform=`translate3d(${(1-t)*(i%2?170:-170)+out*(i%2?120:-120)}px,${(1-t)*260-out*180}px,0) rotate(${(1-t)*(i%2?18:-18)+out*(i%2?12:-12)}deg) scale(${.72+t*.28-out*.1})`});
 bloom.style.opacity=(smooth(3.25,3.55,value)*(1-smooth(3.55,3.85,value))*.8).toFixed(3);
@@ -183,13 +184,21 @@ hero._particles?.draw(value,now,width,height);if(position!==target||alive||hero.
 }
 function request(){if(!raf){last=performance.now();raf=requestAnimationFrame(update)}}
 function scroll(){target=Math.max(0,Math.min(M.end,M.toScene((window.scrollY-runway.offsetTop)/height)));request()}
-function resize(){width=hero.clientWidth;height=hero.clientHeight;previousDraw=-100;const expected=innerWidth<760?'assets/reference-scene-tall.webp':'assets/reference-scene-wide.webp';if(!source.src.endsWith(expected))source.src=expected;scroll()}
+function resize(){width=hero.clientWidth;height=hero.clientHeight;
+// Power-of-two textures retain WebGL 1 mipmaps for the refractive glass.
+// Match each viewport dimension at up to 2x density instead of stretching a fixed square.
+const density=Math.min(devicePixelRatio||1,2),textureSize=n=>Math.min(4096,2**Math.ceil(Math.log2(Math.max(1,n*density))));
+composite.width=textureSize(width);composite.height=textureSize(height);
+previousDraw=-100;const expected=innerWidth<760?'assets/reference-scene-tall.webp':'assets/reference-scene-wide.webp';if(!source.src.endsWith(expected))source.src=expected;scroll()}
 for(const panel of panels){panel._chars=[];for(const heading of panel.querySelectorAll('h2,.story-kicker,.scene-description,.story-side-copy,.story-footnote')){if(heading.matches('h2')){const readable=heading.cloneNode(true);readable.querySelectorAll('br').forEach(br=>br.replaceWith(' '));heading.setAttribute('aria-label',readable.textContent.trim());}const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT),nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const node of nodes){const fragment=document.createDocumentFragment();for(const word of node.textContent.split(/(\s+)/)){if(!word.trim()){fragment.append(word);continue}const span=document.createElement('span');span.className='story-word';if(heading.matches('h2'))span.setAttribute('aria-hidden','true');for(const letter of word){const char=document.createElement('span');char.className='story-char';char.textContent=letter;span.append(char);panel._chars.push(char)}fragment.append(span)}node.replaceWith(fragment)}}}
 layer.querySelector('.story-quiet').insertAdjacentHTML('beforeend','<div class="quiet-note"><small>GRIZ / A WORKING PRINCIPLE</small><p>Useful technology.<br>A little more room to think.</p></div>');
+// These labels belong to the glass surface, above the refracted scene.
+const quietNote=layer.querySelector('.quiet-note'),glassLabels=document.createElement('div');glassLabels.className='glass-labels';glassLabels.setAttribute('aria-hidden','true');glassLabels.append(projectNote,quietNote);hero.append(glassLabels);
 runway.style.height=`${(M.toScroll(M.end)+1)*100}svh`;
 
 source.onload=()=>{previousDraw=-100;request()};hero.addEventListener('scene-ready',()=>{previousDraw=-100;request()});window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',resize,{passive:true});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)request()});document.body.classList.add('story-ready');scroll();const hash=location.hash.slice(1);if(hash in destinations)setTimeout(()=>go(destinations[hash]),100);
+document.fonts.ready.then(()=>{previousDraw=-100;request()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)request()});document.body.classList.add('story-ready');hero.dispatchEvent(new Event('story-content-ready'));resize();const hash=location.hash.slice(1);if(hash in destinations)setTimeout(()=>go(destinations[hash]),100);
 }
 if(hero.classList.contains('shared-scene-ready'))initialise();else hero.addEventListener('scene-ready',initialise,{once:true});
 })();

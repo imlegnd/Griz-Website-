@@ -1,7 +1,7 @@
 precision highp float;
 varying vec2 uv;
-uniform sampler2D photo,mark,particles;
-uniform float particleAmount;
+uniform sampler2D photo,mark,particles,content;
+uniform float particleAmount,foregroundPass,drawGlass;
 uniform vec2 size,imageSize,pointer,velocity,rotation;
 uniform vec3 ball;
 uniform vec4 dent;
@@ -15,6 +15,9 @@ vec3 backdrop(vec2 point,float blur){
   vec3 color=texture2D(photo,clamp(frame(point),vec2(.001),vec2(.999)),blur).rgb;
   if(particleAmount>.001&&point.x>0.&&point.x<1.&&point.y>0.&&point.y<1.){
     vec4 field=texture2D(particles,point);color=mix(color,field.rgb,field.a*particleAmount);
+  }
+  if(foregroundPass>.5&&point.x>0.&&point.x<1.&&point.y>0.&&point.y<1.){
+    vec4 ink=texture2D(content,point);color=mix(color,ink.rgb,ink.a);
   }
   return color;
 }
@@ -78,6 +81,7 @@ vec2 water(vec2 pixel){
   return offset*waterAmount;
 }
 void main(){
+  float glassAlpha=0.;
   vec2 pixel=vec2(uv.x,1.-uv.y)*size;
   vec2 displacement=water(pixel);
   vec3 color=backdrop((pixel+displacement)/size,0.);
@@ -89,7 +93,7 @@ void main(){
   float base=ball.y+ball.z*1.04;
   if(pixel.y>base&&waterAmount>0.){vec2 reflection=vec2(pixel.x+displacement.x*3.,2.*base-pixel.y+displacement.y*2.);float inside=1.-length((reflection-ball.xy)/ball.z);if(inside>0.)color=mix(color,backdrop((ball.xy+(reflection-ball.xy)*.8)/size,1.5)*1.06,.16*waterAmount*exp(-(pixel.y-base)/(ball.z*1.2))*smoothstep(0.,.03,inside));}
   float reach=max(1.9,length(glassHalf)+.9);
-  if(dot(local,local)<reach*reach){
+  if(drawGlass>.5&&dot(local,local)<reach*reach){
     vec3 ray=normalize(vec3(local.x*.07,-local.y*.07,-1.));
     vec3 origin=vec3(local.x,-local.y,0.)-ray*4.;
     vec3 hitPoint=origin,closestPoint=origin;float travel=0.,closest=100.;bool hit=false;
@@ -126,7 +130,10 @@ void main(){
       vec4 letter=texture2D(mark,clamp(glyph,vec2(0.),vec2(1.)));
       glass=mix(glass,letter.rgb,letter.a*.26*(1.-morph));
       color=mix(color,glass,coverage*reveal);
+      glassAlpha=coverage*reveal;
+      // The foreground pass covers native DOM only inside the exact glass edge.
+      if(foregroundPass>.5)color=glass;
     }
   }
-  gl_FragColor=vec4(color,1.);
+  gl_FragColor=vec4(color,mix(1.,glassAlpha,foregroundPass));
 }

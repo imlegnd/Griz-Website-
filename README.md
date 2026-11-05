@@ -39,6 +39,7 @@ With Git integration enabled, pushes to the production branch publish updates au
 ## Files
 
 - `scene.js` and `droplet.frag`: shared WebGL scene and refractive glass.
+- `scene-content.js`: copies the story's native text, borders and card backgrounds into a refraction texture. The live DOM remains visible outside the glass and retains its links, controls and accessibility. Navigation and the labels attached to the glass stay in the foreground.
 - `experience.js`: entrance animation and glass dragging.
 - `story.js`: chapter content, scroll timeline, flying notes, and scene compositions.
 - `motion.js`: reversible scroll mapping, character focus, and paper trajectories.
@@ -51,9 +52,13 @@ See `ASSET-SOURCES.md` for visual provenance.
 
 ## Motion checks
 
-Run `node scripts/check.cjs` and `node scripts/check-motion.cjs`. The latter checks
+Run `node scripts/check.cjs`, `node scripts/check-motion.cjs`, and `node scripts/check-scene.cjs`. The motion check tests
 that chapter links invert the stretched timeline, characters reveal and disappear
 fully, and paper trajectories remain finite at phone, tablet, and desktop sizes.
+The scene check covers texture ownership during responsive image loading, the
+single glass pass, off-screen dragging, and foreground cleanup after context loss.
+Also check the real shader in a browser: drag the orb over the portrait, chapter
+copy, project cards and Notes, then resize between phone and desktop widths.
 
 The animated journey now has 14 chapters. Edit the early content in `layer.innerHTML`
 and the later content in `extraScenes`, `notes`, and `toolData` in `public/story.js`.
