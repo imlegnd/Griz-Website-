@@ -43,7 +43,7 @@ With Git integration enabled, pushes to the production branch publish updates au
 - `story.js`: chapter content, scroll timeline, flying notes, and scene compositions.
 - `motion.js`: reversible scroll mapping, character focus, and paper trajectories.
 - `cinematic.css`: later chapters, note wall, toolkit selector, menu and loader motion.
-- `particle-field.js`: interactive particle field on page 3.
+- `neural-field.js`: interactive layered neural sculpture on page 3, with cursor parallax and click-triggered signal propagation.
 - `script.js`: navigation and detail dialogs.
 - CSS files: base styling, glass/entrance styling, story layout, and opening prompts.
 
@@ -60,3 +60,7 @@ and the later content in `extraScenes`, `notes`, and `toolData` in `public/story
 The reading layout is in `public/index.html`. Keep both views in sync when replacing
 placeholders. The project and contact dialogs still deliberately identify missing
 content; no real career history or project outcomes have been invented.
+
+The paper headline is composited in `paperTypography()` in `story.js`: it enters
+from the right, blooms amber, then scales and moves continuously into the gallery
+heading. Its reversible timing lives in `paperText()` in `motion.js`.

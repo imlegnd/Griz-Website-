@@ -12,13 +12,13 @@ layer.innerHTML=`
   <p class="story-kicker">01 / THE PERSON</p><div class="split-statement"><h2>Technology is<br>the background.</h2><h2>Curiosity is<br>the driving force.</h2></div><p class="story-footnote">Griz. A technical background.<br>An interest in what comes next.</p>
 </section>
 <section class="story-panel story-background" data-center="3" aria-label="My background" aria-hidden="true" inert>
-  <h2>A technical background.<br><span>An open mind.</span></h2><p class="story-side-copy">I’m Griz. I have a tech background and an interest in AI. This is a place for the things I explore, the things I make, and whatever comes next.</p><span class="story-corner-label">ALWAYS A WORK IN PROGRESS</span>
+  <h2>Human curiosity.<br><span>Machine possibility.</span></h2><p class="story-side-copy">I’m Griz. I have a tech background and an interest in AI. This is a place for the things I explore, the things I make, and whatever comes next.</p><span class="story-corner-label">MOVE TO EXPLORE · CLICK TO SEND A SIGNAL</span>
 </section>
 <section class="story-panel story-interests" data-center="4.5" aria-label="AI and technology interests" aria-hidden="true" inert>
   <p class="story-kicker">02 / FOLLOWING THE QUESTIONS</p><h2>Less standing still.</h2><div class="story-giant">More what if?</div><div class="floating-topics"><span>Artificial intelligence</span><span>Connected systems</span><span>Ideas → experiments</span><span>Learning by doing</span><span>People & technology</span><span>What comes next?</span></div><p class="story-footnote">Exploring how AI changes<br>the way we think, create, and work.</p>
 </section>
 <section class="story-panel story-projects" data-center="7" aria-label="Project explorations" aria-hidden="true" inert>
-  <div class="story-gallery-heading"><p class="story-kicker">03 / SELECTED EXPLORATIONS</p><h2>Ideas deserve<br> to get out.</h2><p>Project placeholders.<br>Ready for the real work.</p></div>
+  <div class="story-gallery-heading"><p class="story-kicker">Less standing still.</p><h2>More what if?</h2><p>Project placeholders.<br>Ready for the real work.</p></div>
   <div class="story-gallery-track"><button class="story-project" data-open-project="0"><span class="story-project-art story-art-ai"><i class="glass-cube"></i><small>THOUGHT → SYSTEM</small></span><span class="story-project-meta"><small>EXPLORATION 001 / AI</small><strong>An idea, made useful.</strong><span>Open this project ↗</span></span></button><button class="story-project" data-open-project="1"><span class="story-project-art story-art-tech"><i class="rings"></i><small>CONNECT THE DOTS</small></span><span class="story-project-meta"><small>EXPLORATION 002 / TECHNOLOGY</small><strong>Making the pieces click.</strong><span>Open this project ↗</span></span></button></div>
   <div class="story-glass-note"><small>THE EXPLORATION</small><p class="story-project-note">An idea, made useful.</p><span>Keep scrolling to explore →</span></div>
 </section>
@@ -69,7 +69,7 @@ const clamp=n=>Math.max(0,Math.min(1,n)),mix=(a,b,t)=>a+(b-a)*t,smooth=(a,b,n)=>
 const keys=[
  {at:0,x:.5,y:.52,r:1,m:0,w:1,h:1},
  {at:1.5,x:.5,y:.51,r:1.12,m:0,w:1,h:1},
- {at:3,x:.5,y:.45,r:1.06,m:0,w:1,h:1},
+ {at:3,x:.5,y:.49,r:.52,m:0,w:1,h:1},
  {at:4.5,x:.5,y:.52,r:.92,m:0,w:1,h:1},
  {at:6.1,x:.69,y:.72,r:.92,m:1,w:2.1,h:.9},
  {at:7.8,x:.69,y:.72,r:.92,m:1,w:2.1,h:.9},
@@ -94,9 +94,6 @@ hero.addEventListener('pointermove',e=>{const box=hero.getBoundingClientRect();p
 hero.addEventListener('pointerdown',e=>{const box=hero.getBoundingClientRect();paperPulse={x:e.clientX-box.left,y:e.clientY-box.top,time:performance.now()/1000};request()},{passive:true});
 function topics(value){
  const show=smooth(3.6,4.1,value)*(1-smooth(5.25,5.8,value));if(show<=0)return;
- ctx.save();ctx.globalAlpha=show;ctx.fillStyle='#f4eee5';ctx.textAlign='center';ctx.textBaseline='middle';
- const size=width<800?width*.17:width*.145;
- ctx.font='400 '+size+'px Manrope, sans-serif';ctx.letterSpacing=width<800?'-3px':'-8px';ctx.fillText('More what if?',width*.5,height*.5);ctx.restore();
  topicLabels.forEach((label,i)=>{
   const pose=M.paper(i,topicLabels.length,value,width,height,clock);if(pose.alpha<.002)return;
   const dx=pose.x-pointer.x,dy=pose.y-pointer.y,dist=Math.hypot(dx,dy);let repel=Math.exp(-dist*dist/14000)*14;
@@ -107,6 +104,30 @@ function topics(value){
   ctx.strokeStyle='#79766c';ctx.lineWidth=.7;ctx.strokeRect(-w/2+10,-4,8,8);ctx.fillStyle='#302b25';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,-w/2+24,1);
   if(pose.heat>0){const g=ctx.createLinearGradient(-w/2-9,0,-w/2+12,0);g.addColorStop(0,'#ee842700');g.addColorStop(.45,'#ffb950');g.addColorStop(.6,'#fff8d4');g.addColorStop(1,'#ee842700');ctx.globalAlpha*=pose.heat;ctx.shadowColor='#ff9d31';ctx.shadowBlur=20;ctx.fillStyle=g;ctx.fillRect(-w/2-9,-h/2-6,21,h+12)}ctx.restore();
  });
+}
+// One canvas text composition continues from the papers into the gallery.
+function paperTypography(value){
+ if(value<3.6||value>7.35)return;
+ const state=M.paperText(value),mobile=width<800,large='More what if?',small='Less standing still.';
+ const left=width*(mobile?.07:.05),dockY=height*(mobile?.17:.31),kickerY=height*(mobile?.13:.25);
+ let size=mobile?width*.29:Math.min(width*.26,height*.46);
+ ctx.save();ctx.font=`300 ${size}px Manrope, sans-serif`;ctx.letterSpacing=`${-.06*size}px`;
+ let measured=ctx.measureText(large).width;if(measured>width*.94){size*=width*.94/measured;ctx.font=`300 ${size}px Manrope, sans-serif`;ctx.letterSpacing=`${-.06*size}px`;measured=ctx.measureText(large).width}
+ const finalSize=mobile?28:Math.min(40,width*.033),fontSize=mix(size,finalSize,state.dock);
+ const x=mix(mix(width*1.02,(width-measured)/2,state.slide),left,state.dock),y=mix(height*.5,dockY,state.dock);
+ if(state.enter>0){
+  ctx.textAlign='left';ctx.textBaseline='middle';ctx.font=`300 ${fontSize}px Manrope, sans-serif`;ctx.letterSpacing=`${mix(-.06,-.03,state.dock)*fontSize}px`;
+  const heat=state.glow;
+  if(heat>0){const light=ctx.createRadialGradient(width*.5,y,0,width*.5,y,Math.max(width,height)*.55);light.addColorStop(0,`rgba(214,110,40,${.32*heat*state.exit})`);light.addColorStop(1,'#d66e2800');ctx.fillStyle=light;ctx.fillRect(0,0,width,height)}
+  ctx.globalAlpha=state.exit*.94;ctx.fillStyle=`rgb(${Math.round(mix(244,255,heat))},${Math.round(mix(238,196,heat))},${Math.round(mix(229,140,heat))})`;ctx.fillText(large,x,y);
+  if(heat>0){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=state.exit*heat*.45;ctx.fillStyle='#f27a28';ctx.filter=`blur(${fontSize*.05}px)`;ctx.fillText(large,x,y);ctx.globalAlpha=state.exit*heat*.35;ctx.filter=`blur(${fontSize*.16}px)`;ctx.fillText(large,x,y);ctx.globalCompositeOperation='source-over';ctx.filter='none'}
+ }
+ let topSize=mobile?Math.min(44,Math.max(30,width*.095)):Math.min(84,Math.max(44,width*.05));
+ ctx.font=`400 ${topSize}px Manrope, sans-serif`;ctx.letterSpacing=`${-.03*topSize}px`;let tw=ctx.measureText(small).width;if(tw>width*.88){topSize*=width*.88/tw;tw=width*.88}
+ const topFont=mix(topSize,mobile?10:16,state.topDock),topX=mix((width-tw)/2,left,state.topDock),topY=mix(height*(mobile?.2:.17),kickerY,state.topDock);
+ ctx.font=`400 ${topFont}px Manrope, sans-serif`;ctx.letterSpacing=`${mix(-.03,-.01,state.topDock)*topFont}px`;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle='#f4eee5';
+ for(let i=0;i<small.length;i++){const focus=M.focus(i,small.length,state.topReveal,0);ctx.globalAlpha=focus.alpha*state.exit*mix(.92,.7,state.topDock);ctx.filter=focus.blur>.3?`blur(${focus.blur}px)`:'none';ctx.fillText(small[i],topX+ctx.measureText(small.slice(0,i)).width,topY)}
+ ctx.restore();
 }
 function systemScene(value){
  const amount=smooth(10.35,10.95,value)*(1-smooth(13.2,13.65,value));if(!amount)return;
@@ -126,7 +147,7 @@ function paint(value){
 ctx.setTransform(2048/width,0,0,2048/height,0,0);ctx.globalAlpha=1;ctx.filter='none';dark();
 const opening=1-smooth(.2,1.05,value);if(opening>0){ctx.save();ctx.globalAlpha=opening;ctx.filter=`blur(${smooth(.15,.95,value)*15}px)`;covered(source);ctx.restore()}
 const interest=smooth(3.65,4.25,value)*(1-smooth(5.15,5.8,value));if(interest>0){ctx.save();ctx.globalAlpha=interest*.14;ctx.strokeStyle='#ebc49c';ctx.lineWidth=1;ctx.setLineDash([2,5]);const r=Math.min(width,height)*.24;ctx.strokeRect(width*.5-r,height*.52-r,r*2,r*2);ctx.beginPath();ctx.arc(width*.5,height*.52,r*.88,0,Math.PI*2);ctx.stroke();ctx.restore()}
-topics(value);
+paperTypography(value);topics(value);
 const gallery=smooth(5.25,5.9,value)*(1-smooth(8.1,8.8,value));if(gallery>0){ctx.save();ctx.globalAlpha=gallery;const mobile=width<800,w=mobile?width*.78:width*.4,h=height*(mobile?.51:.67),galleryY=height*(mobile?.30:.16);const slide=smooth(6.8,7.9,value);const x=(mobile?width*.11:width*.34)-slide*(w+width*.06);[0,1].forEach(i=>{const scale=mobile?1:.48+.52*(i?slide:1-slide);ctx.save();ctx.translate(x+i*(w+width*.06),galleryY+h/2);ctx.scale(scale,scale);artwork(0,-h/2,w,h,i);ctx.restore()});ctx.restore()}
 const history=smooth(8.25,9,value)*(1-smooth(10.05,10.8,value));if(history>0){ctx.save();ctx.globalAlpha=history;ctx.fillStyle='#eeece2';ctx.fillRect(0,0,width,height);ctx.strokeStyle='#b7b8a845';ctx.lineWidth=1;for(let i=0;i<9;i++){ctx.beginPath();ctx.arc(width*.25,height*.54,40+i*22,0,Math.PI*2);ctx.stroke()}ctx.restore()}
 systemScene(value);
@@ -163,7 +184,7 @@ hero._particles?.draw(value,now,width,height);if(position!==target||alive||hero.
 function request(){if(!raf){last=performance.now();raf=requestAnimationFrame(update)}}
 function scroll(){target=Math.max(0,Math.min(M.end,M.toScene((window.scrollY-runway.offsetTop)/height)));request()}
 function resize(){width=hero.clientWidth;height=hero.clientHeight;previousDraw=-100;const expected=innerWidth<760?'assets/reference-scene-tall.webp':'assets/reference-scene-wide.webp';if(!source.src.endsWith(expected))source.src=expected;scroll()}
-for(const panel of panels){panel._chars=[];for(const heading of panel.querySelectorAll('h2,.story-kicker,.scene-description,.story-side-copy,.story-footnote')){if(heading.matches('h2'))heading.setAttribute('aria-label',heading.innerText.replace(/\n/g,' '));const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT),nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const node of nodes){const fragment=document.createDocumentFragment();for(const word of node.textContent.split(/(\s+)/)){if(!word.trim()){fragment.append(word);continue}const span=document.createElement('span');span.className='story-word';if(heading.matches('h2'))span.setAttribute('aria-hidden','true');for(const letter of word){const char=document.createElement('span');char.className='story-char';char.textContent=letter;span.append(char);panel._chars.push(char)}fragment.append(span)}node.replaceWith(fragment)}}}
+for(const panel of panels){panel._chars=[];for(const heading of panel.querySelectorAll('h2,.story-kicker,.scene-description,.story-side-copy,.story-footnote')){if(heading.matches('h2')){const readable=heading.cloneNode(true);readable.querySelectorAll('br').forEach(br=>br.replaceWith(' '));heading.setAttribute('aria-label',readable.textContent.trim());}const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT),nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);for(const node of nodes){const fragment=document.createDocumentFragment();for(const word of node.textContent.split(/(\s+)/)){if(!word.trim()){fragment.append(word);continue}const span=document.createElement('span');span.className='story-word';if(heading.matches('h2'))span.setAttribute('aria-hidden','true');for(const letter of word){const char=document.createElement('span');char.className='story-char';char.textContent=letter;span.append(char);panel._chars.push(char)}fragment.append(span)}node.replaceWith(fragment)}}}
 layer.querySelector('.story-quiet').insertAdjacentHTML('beforeend','<div class="quiet-note"><small>GRIZ / A WORKING PRINCIPLE</small><p>Useful technology.<br>A little more room to think.</p></div>');
 runway.style.height=`${(M.toScroll(M.end)+1)*100}svh`;
 

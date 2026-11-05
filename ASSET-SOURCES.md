@@ -2,4 +2,4 @@ Scene images: public reference assets from https://dentorb.ai/home/img/c-wide.we
 
 Pinned hand scene: https://dentorb.ai/home/img/hand-cut.webp, used as a third-party reference asset at Griz’s request.
 
-The hand scene has been replaced with an original procedural particle field. The hand image is no longer loaded or displayed.
+The hand scene and subsequent magnetic particle cradle have been replaced with an original procedural neural sculpture. The hand image is no longer loaded or displayed. Its layered geometry, light paths, and signal interactions are drawn locally in `neural-field.js`.

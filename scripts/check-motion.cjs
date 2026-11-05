@@ -27,3 +27,11 @@ for(const n of [1,15,120])for(let i=0;i<n;i++){
  assert.equal(M.focus(i,n,1,1).alpha,0);
 }
 console.log('Timeline inversion, paper bounds, and reversible character reveals passed.');
+for(let s=3.5;s<8;s+=.01){const p=M.paperText(s);for(const v of Object.values(p))assert(v>=0&&v<=1&&Number.isFinite(v));}
+assert.equal(M.paperText(3.6).slide,0);
+assert.equal(M.paperText(4.5).slide,1);
+assert.equal(M.paperText(4.5).dock,0);
+assert.equal(M.paperText(5.9).dock,1);
+assert.equal(M.paperText(6.2).glow,0);
+assert.equal(M.paperText(7.35).exit,0);
+console.log('Paper text entry, amber glow, and continuous gallery docking passed.');

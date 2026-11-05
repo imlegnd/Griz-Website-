@@ -18,6 +18,15 @@
     const drift=Math.sin(time*.65+index*1.7)*3*arrival*(1-absorb);
     return {x:width*.5+Math.cos(swirl)*(radius+outside),y:height*.52+Math.sin(swirl)*(radius*.88+outside)+drift,rotation:Math.sin(angle*2)*.24+(1-arrival)*(index%2?1:-1)*1.5+absorb*2.2,scale:(mobile?.76:1)*(1-absorb*.94),alpha:arrival*(1-ease(range(.65,1,absorb))),heat:range(.1,.7,absorb)};
   }
-  const api={clamp,ease,range,toScene,toScroll,focus,paper,end:23.2};
+  function paperText(scene){return {
+    enter:range(3.9,4.55,scene),
+    slide:1-Math.pow(1-Math.min(range(3.9,4.55,scene)/.76,1),2),
+    glow:ease(range(4.5,4.78,scene))*(1-ease(range(5.5,5.78,scene))),
+    topDock:ease(range(5.1,5.45,scene)),
+    dock:ease(range(5.45,5.9,scene)),
+    topReveal:range(3.65,3.96,scene),
+    exit:1-ease(range(6.85,7.35,scene))
+  }}
+  const api={clamp,ease,range,toScene,toScroll,focus,paper,paperText,end:23.2};
   if(typeof module!=='undefined')module.exports=api;else window.GrizMotion=api;
 })();

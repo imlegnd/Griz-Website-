@@ -4,6 +4,10 @@
 .reading-note-list{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:45px}.reading-note-list p{border-top:1px solid #c7c6bb;padding:20px 0;line-height:1.5}
 .story-word{white-space:nowrap;will-change:auto}
 .story-project{transform-origin:left center;will-change:transform}
+/* Canvas copy is also sampled by the glass. Retain the semantic DOM for readers. */
+.story-interests>h2,.story-interests>.story-kicker,.story-gallery-heading{opacity:0!important;pointer-events:none}
+.story-background .story-corner-label{max-width:36%;line-height:1.7;color:#b8d9d0;opacity:.7}
+@media(max-width:800px){.story-background .story-corner-label{display:block;bottom:9%;left:7%;max-width:86%;font-size:6px;letter-spacing:1px}.story-background .story-side-copy{bottom:15%;max-width:70%}}
 .story-panel .scene-description{font-size:15px;line-height:1.65;max-width:310px;color:#d9cbbccc}
 .story-bloom{position:absolute;inset:0;border-radius:30px;box-shadow:inset 0 0 12px 3px #fff2c7,inset 0 0 40px 8px #ffad4d,inset 0 0 80px 15px #bd5919;z-index:6;pointer-events:none;opacity:0}
 .story-workspace,.story-signal,.story-quiet,.story-night{padding:0}
