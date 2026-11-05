@@ -1,0 +1,30 @@
+
+/* Quiet, editorial prompts with a little more size than the original labels. */
+.orb-caption,.story-ready .orb-stage>.orb-caption{
+ display:inline-flex;align-items:center;gap:12px;width:max-content;
+ padding:0;border:0;border-radius:0;background:none;box-shadow:none;
+ backdrop-filter:none;color:#32281d;font:500 11px/1.5 'DM Sans',sans-serif;
+ letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;
+ text-shadow:0 0 5px #fff0d7,0 0 12px #fff0d780;bottom:8%;left:calc(100% + 18px);
+}
+.orb-caption:before{
+ content:'';display:block;width:30px;height:1px;flex:0 0 30px;
+ background:#755d3d77;border:0;border-radius:0;margin:0;
+}
+.hero-bottom,.story-ready .hero:not(.show-materials) .hero-bottom{bottom:8.5%;z-index:5}
+.hero-bottom>a{
+ display:flex;flex-direction:column;align-items:center;gap:12px;
+ padding:0;border:0;border-radius:0;background:none;box-shadow:none;
+ backdrop-filter:none;color:#fff5e0;font:500 10px/1.5 'DM Sans',sans-serif;
+ letter-spacing:2px;text-transform:uppercase;text-shadow:0 1px 6px #3a2c1b88;
+}
+.hero-bottom>a>span{display:block;width:1px;height:25px;margin:0;background:#fff5e0bb;border-radius:0;font-size:0;transition:height .2s}
+.hero-bottom>a:hover{background:none;box-shadow:none;color:#fffbed}
+.hero-bottom>a:hover>span{height:29px;transform:none}
+@media(max-width:800px){
+ .orb-caption,.story-ready .orb-stage>.orb-caption{left:50%;bottom:-39px;transform:translateX(-50%);font-size:10px;letter-spacing:1.2px;gap:9px}
+ .orb-caption:before{display:block;width:22px;flex-basis:22px}
+ .hero-bottom>a{font-size:9px;gap:9px}
+ .hero-bottom>a>span{height:22px}
+}
+@media(prefers-reduced-motion:reduce){.hero-bottom>a>span{transition:none}}
