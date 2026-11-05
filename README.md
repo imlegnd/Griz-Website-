@@ -41,8 +41,22 @@ With Git integration enabled, pushes to the production branch publish updates au
 - `scene.js` and `droplet.frag`: shared WebGL scene and refractive glass.
 - `experience.js`: entrance animation and glass dragging.
 - `story.js`: chapter content, scroll timeline, flying notes, and scene compositions.
+- `motion.js`: reversible scroll mapping, character focus, and paper trajectories.
+- `cinematic.css`: later chapters, note wall, toolkit selector, menu and loader motion.
 - `particle-field.js`: interactive particle field on page 3.
 - `script.js`: navigation and detail dialogs.
 - CSS files: base styling, glass/entrance styling, story layout, and opening prompts.
 
 See `ASSET-SOURCES.md` for visual provenance.
+
+## Motion checks
+
+Run `node scripts/check.cjs` and `node scripts/check-motion.cjs`. The latter checks
+that chapter links invert the stretched timeline, characters reveal and disappear
+fully, and paper trajectories remain finite at phone, tablet, and desktop sizes.
+
+The animated journey now has 14 chapters. Edit the early content in `layer.innerHTML`
+and the later content in `extraScenes`, `notes`, and `toolData` in `public/story.js`.
+The reading layout is in `public/index.html`. Keep both views in sync when replacing
+placeholders. The project and contact dialogs still deliberately identify missing
+content; no real career history or project outcomes have been invented.
